@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { Horse } from '../types';
+import { Horse } from '@/types';
 import { getHref, getTextContent } from './utils';
 import { getHorseRecords } from './getHorseRecords';
 

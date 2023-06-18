@@ -1,5 +1,5 @@
 import { ElementHandle, Page } from 'puppeteer';
-import { RaceClass, RaceSummary } from '../types';
+import { RaceClass, RaceSummary } from '@/types';
 import {
   getHref,
   getRaceClassFromElementClass,

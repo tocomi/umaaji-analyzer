@@ -1,5 +1,5 @@
 import { getTodayRaces, launchBrowser, getRaceData } from './libs';
-import { Race, RaceSummary } from './types';
+import { Race, RaceSummary } from '@/types';
 
 export const getRaceSummaries = async (): Promise<RaceSummary[]> => {
   const { browser, page } = await launchBrowser();

@@ -1,5 +1,5 @@
-import { ElementHandle, Page } from 'puppeteer';
-import { Record } from '../types';
+import { ElementHandle } from 'puppeteer';
+import { Record } from '@/types';
 import { getTextContent } from './utils';
 
 const dummyRecord: Record = {

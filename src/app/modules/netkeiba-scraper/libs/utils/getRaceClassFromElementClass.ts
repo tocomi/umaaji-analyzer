@@ -1,4 +1,4 @@
-import { RaceClass } from '../../types';
+import { RaceClass } from '@/types';
 
 export const getRaceClassFromElementClass = (
   className: string

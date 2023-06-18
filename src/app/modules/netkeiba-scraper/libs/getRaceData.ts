@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { Race } from '../types';
+import { Race } from '@/types';
 import { getTextContent } from './utils';
 import { getHorseData } from './getHorseData';
 
