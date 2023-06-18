@@ -1,9 +1,10 @@
 'use client';
 
-import { use, useEffect, useRef, useState } from 'react';
+import { RaceSummary } from '@/types';
+import { useEffect, useRef, useState } from 'react';
 
 export const useRaceSummaries = () => {
-  const [raceSummaries, setRaceSummaries] = useState<any[]>([]);
+  const [raceSummaries, setRaceSummaries] = useState<RaceSummary[]>([]);
 
   const initialized = useRef(false);
   useEffect(() => {
