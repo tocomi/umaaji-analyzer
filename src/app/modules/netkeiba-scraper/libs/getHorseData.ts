@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
-import { Horse } from '@/types';
-import { getHref, getTextContent } from './utils';
 import { getHorseRecords } from './getHorseRecords';
+import { getHref, getTextContent } from './utils';
+import { Horse } from '@/types';
 
 /**
  * レース詳細ページから出走馬の情報を取得する

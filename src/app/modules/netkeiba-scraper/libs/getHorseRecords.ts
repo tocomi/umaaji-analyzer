@@ -1,6 +1,6 @@
 import { ElementHandle } from 'puppeteer';
-import { Record } from '@/types';
 import { getTextContent } from './utils';
+import { Record } from '@/types';
 
 const dummyRecord: Record = {
   raceDate: '-',

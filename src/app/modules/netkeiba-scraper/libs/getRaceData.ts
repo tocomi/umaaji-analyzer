@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
-import { Race } from '@/types';
-import { getTextContent } from './utils';
 import { getHorseData } from './getHorseData';
+import { getTextContent } from './utils';
+import { Race } from '@/types';
 
 export const getRaceData = async ({
   page,

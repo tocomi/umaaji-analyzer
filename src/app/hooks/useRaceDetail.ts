@@ -1,7 +1,7 @@
 'use client';
 
-import { Race } from '@/types';
 import { useEffect, useRef, useState } from 'react';
+import { Race } from '@/types';
 
 export const useRaceDetail = (raceId: number) => {
   const [raceDetail, setRaceDetail] = useState<Race | undefined>(undefined);
@@ -15,7 +15,7 @@ export const useRaceDetail = (raceId: number) => {
       setRaceDetail(await response.json());
     };
     load();
-  }, []);
+  }, [raceId]);
 
   return raceDetail;
 };

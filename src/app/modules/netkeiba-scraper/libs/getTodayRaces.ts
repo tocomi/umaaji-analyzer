@@ -1,5 +1,4 @@
 import { ElementHandle, Page } from 'puppeteer';
-import { RaceClass, RaceSummary } from '@/types';
 import {
   getHref,
   getRaceClassFromElementClass,
@@ -7,6 +6,7 @@ import {
   getRaceTypeFromTypeName,
   getTextContent,
 } from './utils';
+import { RaceClass, RaceSummary } from '@/types';
 
 /**
  * 開催地の一覧を取得する

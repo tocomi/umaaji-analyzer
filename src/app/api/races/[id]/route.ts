@@ -1,5 +1,5 @@
-import { getRaceDetail } from '@/modules/netkeiba-scraper';
 import { NextRequest, NextResponse } from 'next/server';
+import { getRaceDetail } from '@/modules/netkeiba-scraper';
 
 export async function GET(
   _req: NextRequest,
