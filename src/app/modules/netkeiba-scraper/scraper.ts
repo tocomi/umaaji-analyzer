@@ -5,7 +5,6 @@ export const getRaceSummaries = async (): Promise<RaceSummary[]> => {
   const { browser, page } = await launchBrowser();
 
   const todayRaces = await getTodayRaces(page);
-  console.log('👾 -> todayRaces:', todayRaces);
 
   await browser.close();
 
