@@ -1,29 +1,18 @@
-'use client';
+import RaceDetail from './RaceDetail';
+import { Race } from '@/types';
 
-import { useRaceDetail } from '@/hooks/useRaceDetail';
+export const getRaceDetail = async (raceId: number): Promise<Race> => {
+  const response = await fetch(`http://localhost:3000/api/races/${raceId}`);
+  const raceDetail = (await response.json()) as Race;
+  return raceDetail;
+};
 
-export default function RaceDetail({
+export default async function Race({
   params: { id },
 }: {
   params: { id: string };
 }) {
-  const raceDetail = useRaceDetail(Number(id));
+  const raceDetail = await getRaceDetail(Number(id));
 
-  if (!raceDetail) {
-    return <div>loading...</div>;
-  }
-
-  return (
-    <div>
-      <p>
-        {raceDetail.place} {raceDetail.round}R
-      </p>
-      <p>{raceDetail.name}</p>
-      {raceDetail.horses.map((horse) => (
-        <div key={horse.name}>
-          <p>{horse.name}</p>
-        </div>
-      ))}
-    </div>
-  );
+  return <RaceDetail raceDetail={raceDetail} />;
 }
