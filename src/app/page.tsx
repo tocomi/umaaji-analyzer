@@ -1,5 +1,5 @@
 import { RaceSummary } from './types';
-import { Races } from '@/components';
+import { Races } from '@/races/Races';
 
 export const getRaceSummaries = async (): Promise<RaceSummary[]> => {
   const response = await fetch('http://localhost:3000/api/races');
