@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import { Tabs } from './Tabs';
 import { RaceSummary } from '@/types';
 
 export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
@@ -16,7 +15,6 @@ export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
 
   return (
     <>
-      <Tabs tabTitles={tabTitles} />
       {raceSummaries.map((raceSummary) => (
         <div
           key={`${raceSummary.place}-${raceSummary.round}`}
