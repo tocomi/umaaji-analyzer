@@ -1,35 +1,36 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
+import { stack } from '../../../styled-system/patterns';
+import { RaceCard } from './RaceCard';
 import { RaceSummary } from '@/types';
 
 export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
   const router = useRouter();
 
-  const tabTitles = useMemo(() => {
-    return Array.from(
-      new Set(raceSummaries.map((raceSummary) => raceSummary.place))
-    );
-  }, [raceSummaries]);
+  // const tabTitles = useMemo(() => {
+  //   return Array.from(
+  //     new Set(raceSummaries.map((raceSummary) => raceSummary.place))
+  //   );
+  // }, [raceSummaries]);
+
+  const onClickCard = useCallback(
+    (raceId: number) => {
+      router.push(`/races/${raceId}`);
+    },
+    [router]
+  );
 
   return (
-    <>
+    <div className={stack({ padding: 4, gap: 2 })}>
       {raceSummaries.map((raceSummary) => (
-        <div
+        <RaceCard
           key={`${raceSummary.place}-${raceSummary.round}`}
-          className="relative bg-white py-2 px-6 shadow-xl ring-1 ring-gray-900/5"
-          onClick={() => {
-            router.push(`/races/${raceSummary.id}`);
-          }}
-        >
-          <p>
-            {raceSummary.place} {raceSummary.round}R
-          </p>
-          <p>{raceSummary.name}</p>
-          <p>{raceSummary.startTime}</p>
-        </div>
+          raceSummary={raceSummary}
+          onClick={onClickCard}
+        />
       ))}
-    </>
+    </div>
   );
 };
