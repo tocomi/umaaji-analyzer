@@ -1,4 +1,4 @@
-export const raceClass = {
+export const raceClassName = {
   NEW: '新馬',
   '0WIN': '未勝利',
   '1WIN': '1勝',
@@ -12,11 +12,11 @@ export const raceClass = {
   G1: 'G1',
   OTHER: '-',
 } as const;
-export type RaceClass = keyof typeof raceClass;
+export type RaceClass = keyof typeof raceClassName;
 
-export const raceType = {
+export const raceTypeName = {
   turf: '芝',
   dirt: 'ダ',
   hurdle: '障',
 } as const;
-export type RaceType = keyof typeof raceType;
+export type RaceType = keyof typeof raceTypeName;

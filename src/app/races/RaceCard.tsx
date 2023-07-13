@@ -3,12 +3,19 @@
 import { FC, memo, useCallback } from 'react';
 import { css } from '../../../styled-system/css';
 import { center, stack } from '../../../styled-system/patterns';
-import { RaceSummary, raceClass, raceType } from '@/types';
+import { RaceClassBadge } from '@/components/RaceClassBadge';
+import { RaceSummary, raceTypeName } from '@/types';
 
 type Props = {
   raceSummary: RaceSummary;
   onClick: (raceId: number) => void;
 };
+
+const additionalInfoStyle = css({
+  fontSize: 14,
+  color: 'gray.500',
+  fontWeight: 'bold',
+});
 
 export const RaceCard: FC<Props> = memo(function RaceCard({
   raceSummary,
@@ -25,6 +32,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
         p: 1,
         borderWidth: 2,
         borderColor: 'sky.400',
+        backgroundColor: 'sky.50',
       })}
       onClick={_onClick}
     >
@@ -49,6 +57,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
 
         <div className={stack({ gap: 1 })}>
           <div className={stack({ direction: 'row' })}>
+            <RaceClassBadge raceClass={raceSummary.class} />
             <p
               className={css({
                 fontSize: 16,
@@ -58,37 +67,14 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
             >
               {raceSummary.name}
             </p>
-            <p>{raceClass[raceSummary.class]}</p>
           </div>
           <div className={stack({ direction: 'row' })}>
-            <p
-              className={css({
-                fontSize: 14,
-                color: 'gray.400',
-                fontWeight: 'bold',
-              })}
-            >
-              {raceType[raceSummary.type]}
+            <p className={additionalInfoStyle}>
+              {raceTypeName[raceSummary.type]}
               {raceSummary.distance}m
             </p>
-            <p
-              className={css({
-                fontSize: 14,
-                color: 'gray.400',
-                fontWeight: 'bold',
-              })}
-            >
-              {raceSummary.horseCount}頭
-            </p>
-            <p
-              className={css({
-                fontSize: 14,
-                color: 'gray.400',
-                fontWeight: 'bold',
-              })}
-            >
-              {raceSummary.startTime}
-            </p>
+            <p className={additionalInfoStyle}>{raceSummary.horseCount}頭</p>
+            <p className={additionalInfoStyle}>{raceSummary.startTime}</p>
           </div>
         </div>
       </div>
