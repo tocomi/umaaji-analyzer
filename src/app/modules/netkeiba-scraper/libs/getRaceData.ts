@@ -3,6 +3,7 @@ import { getHorseData } from './getHorseData';
 import {
   getRaceClassFromElementClass,
   getRaceClassFromRaceName,
+  getRaceTypeFromTypeName,
   getTextContent,
 } from './utils';
 import { Race, RaceClass } from '@/types';
@@ -64,6 +65,36 @@ export const getRaceData = async ({
 
   const raceClass = await getClass(raceElement, raceName);
 
+  const startTimeElement = await raceElement.$('.RaceData01');
+  if (!startTimeElement) return;
+  // ex. 15:45発走 /
+  const rawStartTime = await getTextContent(startTimeElement);
+  if (!rawStartTime) return;
+  const startTimeMatch = rawStartTime.match(/(\d{2}:\d{2})/);
+  if (!startTimeMatch) return;
+  const startTime = startTimeMatch[1];
+
+  const typeAndDistanceElements = await raceElement.$$('.RaceData01 span');
+  if (!typeAndDistanceElements) return;
+  // ex. 芝1200m
+  const rawTypeAndDistance = await getTextContent(typeAndDistanceElements[0]);
+  if (!rawTypeAndDistance) return;
+  const type = getRaceTypeFromTypeName(rawTypeAndDistance[0]);
+
+  const distancePattern = /(\d+)m/;
+  const distanceMatch = rawTypeAndDistance.match(distancePattern);
+  if (!distanceMatch) return;
+  const distance = Number(distanceMatch[1]);
+
+  const horseCountElement = await raceElement.$('.RaceData02');
+  if (!horseCountElement) return;
+  // ex. 2回 函館 ... 16頭
+  const rawHorseCount = await getTextContent(horseCountElement);
+  if (!rawHorseCount) return;
+  const horseCountMatch = rawHorseCount.match(/(\d+)頭/);
+  if (!horseCountMatch) return;
+  const horseCount = Number(horseCountMatch[1]);
+
   console.log(
     `🏇 Target race: ${racePlace} ${raceRound}R ${raceName} ${raceClass}`
   );
@@ -75,6 +106,10 @@ export const getRaceData = async ({
     name: raceName,
     place: racePlace,
     class: raceClass,
+    startTime,
+    type,
+    distance,
+    horseCount,
     horses,
   };
 };
