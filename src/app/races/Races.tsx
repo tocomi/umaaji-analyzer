@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { stack } from '../../../styled-system/patterns';
 import { PlaceTabs } from './PlaceTabs';
-import { RaceCard } from './RaceCard';
+import { RaceCard } from '@/components/RaceCard';
 import { RaceSummary } from '@/types';
 
 export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
