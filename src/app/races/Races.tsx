@@ -1,19 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { stack } from '../../../styled-system/patterns';
+import { PlaceTabs } from './PlaceTabs';
 import { RaceCard } from './RaceCard';
 import { RaceSummary } from '@/types';
 
 export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
   const router = useRouter();
-
-  // const tabTitles = useMemo(() => {
-  //   return Array.from(
-  //     new Set(raceSummaries.map((raceSummary) => raceSummary.place))
-  //   );
-  // }, [raceSummaries]);
 
   const onClickCard = useCallback(
     (raceId: number) => {
@@ -22,15 +17,41 @@ export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
     [router]
   );
 
+  const raceSummaryMap = useMemo(() => {
+    return raceSummaries.reduce<{ [key: string]: RaceSummary[] }>(
+      (result, raceSummary) => {
+        (result[raceSummary.place] = result[raceSummary.place] || []).push(
+          raceSummary
+        );
+        return result;
+      },
+      {}
+    );
+  }, [raceSummaries]);
+
+  const tabTitles = useMemo(() => {
+    return Object.keys(raceSummaryMap);
+  }, [raceSummaryMap]);
+
+  const tabContens = useMemo(() => {
+    return Object.values(raceSummaryMap).map((raceSummaries) => {
+      return (
+        <div className={stack({ gap: 2 })} key={raceSummaries[0].place}>
+          {raceSummaries.map((raceSummary) => (
+            <RaceCard
+              key={`${raceSummary.place}-${raceSummary.round}`}
+              raceSummary={raceSummary}
+              onClick={onClickCard}
+            />
+          ))}
+        </div>
+      );
+    });
+  }, [onClickCard, raceSummaryMap]);
+
   return (
     <div className={stack({ padding: 4, gap: 2 })}>
-      {raceSummaries.map((raceSummary) => (
-        <RaceCard
-          key={`${raceSummary.place}-${raceSummary.round}`}
-          raceSummary={raceSummary}
-          onClick={onClickCard}
-        />
-      ))}
+      <PlaceTabs titles={tabTitles} contents={tabContens} />
     </div>
   );
 };
