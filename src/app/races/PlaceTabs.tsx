@@ -1,5 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import { FC, ReactNode, memo } from 'react';
+import { css } from '../../../styled-system/css';
+import { stack } from '../../../styled-system/patterns';
 
 type Props = {
   titles: string[];
@@ -11,13 +13,28 @@ export const PlaceTabs: FC<Props> = memo(function PlaceTabs({
   contents,
 }) {
   return (
-    <Tabs.Root className="TabsRoot" defaultValue="tab1">
-      <Tabs.List className="TabsList" aria-label="Manage your places">
+    <Tabs.Root defaultValue="tab1">
+      <Tabs.List
+        className={stack({
+          direction: 'row',
+          gap: 1,
+        })}
+        aria-label="race places"
+      >
         {titles.map((title, index) => (
           <Tabs.Trigger
             key={title}
             value={`tab${index + 1}`}
-            className="TabsTrigger"
+            className={css({
+              w: '100%',
+              p: 2,
+              '&[data-state=active]': {
+                fontWeight: 'bold',
+                color: 'cyan.700',
+                borderBottomWidth: 2,
+                borderBottomColor: 'cyan.700',
+              },
+            })}
           >
             {title}
           </Tabs.Trigger>
@@ -27,7 +44,7 @@ export const PlaceTabs: FC<Props> = memo(function PlaceTabs({
         <Tabs.Content
           key={index}
           value={`tab${index + 1}`}
-          className="TabsContent"
+          className={css({ pt: 2 })}
         >
           {content}
         </Tabs.Content>
