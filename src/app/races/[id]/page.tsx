@@ -2,7 +2,9 @@ import RaceDetail from './RaceDetail';
 import { Race } from '@/types';
 
 export const getRaceDetail = async (raceId: number): Promise<Race> => {
-  const response = await fetch(`http://localhost:3000/api/races/${raceId}`);
+  const response = await fetch(`http://localhost:3000/api/races/${raceId}`, {
+    next: { revalidate: 300 },
+  });
   const raceDetail = (await response.json()) as Race;
   return raceDetail;
 };
