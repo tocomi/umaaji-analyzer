@@ -31,7 +31,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
         rounded: 8,
         p: 1,
         borderWidth: 2,
-        borderColor: 'sky.400',
+        borderColor: 'cyan.700',
         backgroundColor: 'sky.50',
       })}
       onClick={_onClick}
@@ -41,7 +41,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
           className={center({
             p: 1,
             rounded: 4,
-            backgroundColor: 'sky.400',
+            backgroundColor: 'cyan.700',
             color: 'white',
             minW: '44px',
             flexDir: 'column',
