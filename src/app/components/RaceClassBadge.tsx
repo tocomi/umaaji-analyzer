@@ -16,6 +16,7 @@ const recipe = cva({
     color: 'gray.600',
     fontWeight: 'bold',
     minW: '44px',
+    h: '24px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

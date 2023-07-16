@@ -2,8 +2,9 @@
 
 import { FC, memo, useCallback } from 'react';
 import { css } from '../../../styled-system/css';
-import { center, stack } from '../../../styled-system/patterns';
+import { stack } from '../../../styled-system/patterns';
 import { RaceClassBadge } from '@/components/RaceClassBadge';
+import { RaceRoundBadge } from '@/components/RaceRoundBadge';
 import { RaceSummary, raceTypeName } from '@/types';
 
 type Props = {
@@ -37,23 +38,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
       onClick={_onClick}
     >
       <div className={stack({ direction: 'row' })}>
-        <div
-          className={center({
-            p: 1,
-            rounded: 4,
-            backgroundColor: 'cyan.700',
-            color: 'white',
-            minW: '44px',
-            flexDir: 'column',
-          })}
-        >
-          <p className={css({ fontSize: 12, fontWeight: 'bold' })}>
-            {raceSummary.place}
-          </p>
-          <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
-            {raceSummary.round}R
-          </p>
-        </div>
+        <RaceRoundBadge place={raceSummary.place} round={raceSummary.round} />
 
         <div className={stack({ gap: 1 })}>
           <div className={stack({ direction: 'row' })}>
