@@ -143,6 +143,8 @@ export const getTodayRaces = async (page: Page): Promise<RaceSummary[]> => {
 
     // NOTE: 前のレースのラウンドが今のラウンド以上の場合は開催地が移ったとみなす
     if (round <= beforeRaceRound) currentPlaceIndex++;
+    beforeRaceRound = round;
+
     const place = places[currentPlaceIndex];
     if (!place) continue;
 
@@ -155,8 +157,6 @@ export const getTodayRaces = async (page: Page): Promise<RaceSummary[]> => {
     if (!otherInfo) continue;
 
     races.push({ id, place, round, name, class: raceClass, ...otherInfo });
-
-    beforeRaceRound = round;
   }
 
   return races;
