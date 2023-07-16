@@ -58,7 +58,7 @@ const getClass = async (
   );
   if (className === '') return 'OTHER';
 
-  const raceClass = getRaceClassFromElementClass(className);
+  const raceClass = getRaceClassFromElementClass(className.split(' ')[1]);
   if (raceClass) return raceClass;
 
   return 'OTHER';
