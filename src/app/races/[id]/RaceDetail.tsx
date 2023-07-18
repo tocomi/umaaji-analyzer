@@ -84,15 +84,33 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                   {horse.horseNumber}
                 </p>
               </div>
-              <p
-                className={css({
-                  fontSize: 14,
-                  minW: '128px',
-                  fontWeight: 'bold',
-                })}
+              <div className={stack({ gap: 1 })}>
+                <p
+                  className={css({
+                    fontSize: 14,
+                    minW: '128px',
+                    fontWeight: 'bold',
+                  })}
+                >
+                  {horse.name}
+                </p>
+                <div
+                  className={stack({ direction: 'row', gap: 1, fontSize: 12 })}
+                >
+                  <p>{horse.sex}</p>
+                  <p>{horse.age}</p>
+                  <p>{horse.jockey}</p>
+                  <p>{horse.handi}</p>
+                </div>
+              </div>
+              <div
+                className={stack({ gap: 0, minW: '40px', textAlign: 'center' })}
               >
-                {horse.name}
-              </p>
+                <p className={css({ fontSize: 18, fontWeight: 'bold' })}>
+                  {horse.oddsRank}
+                </p>
+                <p className={css({ fontSize: 14 })}>{horse.odds}</p>
+              </div>
             </div>
           ))}
         </div>
