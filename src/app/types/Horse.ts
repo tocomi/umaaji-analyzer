@@ -6,4 +6,6 @@ export type Horse = {
   horseNumber: number;
   gateNumber: number;
   records: Record[];
+  odds: number;
+  oddsRank: number;
 };

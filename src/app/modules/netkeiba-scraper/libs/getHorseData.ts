@@ -33,6 +33,19 @@ export const getHorseData = async ({
     if (!gateNumberElement.length) continue;
     const gateNumber = Number(await getTextContent(gateNumberElement[0]));
 
+    const oddsAndRankElements = await horseElement.$$('.Popular span');
+    if (!oddsAndRankElements.length) continue;
+    const rawOdds = await getTextContent(oddsAndRankElements[0]);
+    if (!rawOdds) continue;
+    const odds = Number(rawOdds);
+
+    // ex. (12人気)
+    const rawOddsRank = await getTextContent(oddsAndRankElements[1]);
+    if (!rawOddsRank) continue;
+    const oddsRankMatch = rawOddsRank.match(/(\d+)人気/);
+    if (!oddsRankMatch) continue;
+    const oddsRank = Number(oddsRankMatch[1]);
+
     const records = await getHorseRecords({ horseElement });
 
     horses.push({
@@ -40,6 +53,8 @@ export const getHorseData = async ({
       url: horseUrl,
       horseNumber,
       gateNumber,
+      odds,
+      oddsRank,
       records,
     });
   }
