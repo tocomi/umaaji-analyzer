@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { css, cva } from '../../../../styled-system/css';
 import { center, stack } from '../../../../styled-system/patterns';
 import { RaceCard } from '@/components/RaceCard';
+import { calculateScore } from '@/modules/umaaji-calculator';
 import { HorseSexMap, Race } from '@/types';
 
 const DUMMY_ID = 0;
@@ -66,6 +67,13 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
     });
   }, [raceDetail.horses]);
 
+  const sortedHorsesWithScore = useMemo(() => {
+    return sortedHorses.map((horse) => {
+      const score = calculateScore(raceDetail, horse.records);
+      return { ...horse, score };
+    });
+  }, [raceDetail, sortedHorses]);
+
   return (
     <div
       className={css({
@@ -77,11 +85,11 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
           raceSummary={{ ...raceDetail, id: DUMMY_ID }}
           onClick={DO_NOTHING}
         />
-        <div aria-label="horses">
-          {sortedHorses.map((horse) => (
+
+        <div>
+          {sortedHorsesWithScore.map((horse) => (
             <div
               key={horse.name}
-              aria-label="horse"
               className={stack({
                 direction: 'row',
                 alignItems: 'center',
@@ -92,10 +100,8 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 marginTop: '-1px',
               })}
             >
-              <div
-                aria-label="horse numbers"
-                className={stack({ gap: 0, h: '51px', minW: '18px' })}
-              >
+              <div className={stack({ gap: 0, h: '51px', minW: '18px' })}>
+                {/* 枠番 */}
                 <div
                   className={gateNumberRecipe({
                     // @ts-ignore TODO: 型エラー解消
@@ -104,6 +110,8 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 >
                   <p>{horse.gateNumber}</p>
                 </div>
+
+                {/* 馬番 */}
                 <div
                   className={center({
                     flex: 1,
@@ -119,10 +127,15 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 </div>
               </div>
               <div
-                aria-label="horse info"
-                className={stack({ direction: 'row', gap: 1, p: 1 })}
+                className={stack({
+                  p: 1,
+                  flex: 1,
+                  direction: 'row',
+                  justifyContent: 'space-between',
+                })}
               >
                 <div className={stack({ gap: 1 })}>
+                  {/* 馬名 */}
                   <p
                     className={css({
                       fontSize: 14,
@@ -142,26 +155,65 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                       color: 'gray.500',
                     })}
                   >
+                    {/* 馬齢 */}
                     {/* @ts-ignore TODO: 型エラー解消 */}
                     <p className={ageRecipe({ sex: horse.sex })}>
                       {HorseSexMap[horse.sex]}
                       {horse.age}
                     </p>
+
+                    {/* ジョッキー */}
                     <p className={css({ minW: '40px' })}>{horse.jockey}</p>
+
+                    {/* ハンデ */}
                     <p>{horse.handi}</p>
                   </div>
                 </div>
-                <div
-                  className={stack({
-                    gap: 0,
-                    minW: '40px',
-                    textAlign: 'center',
-                  })}
-                >
-                  <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
-                    {horse.oddsRank}
-                  </p>
-                  <p className={css({ fontSize: 12 })}>{horse.odds}</p>
+
+                <div className={stack({ direction: 'row', gap: 2 })}>
+                  {/* オッズ */}
+                  <div
+                    className={stack({
+                      gap: 0,
+                      minW: '40px',
+                      textAlign: 'center',
+                    })}
+                  >
+                    <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
+                      {horse.oddsRank}
+                    </p>
+                    <p className={css({ fontSize: 12 })}>{horse.odds}</p>
+                  </div>
+
+                  {/* 平均値 */}
+                  <div
+                    className={stack({
+                      gap: 0,
+                      minW: '40px',
+                      textAlign: 'center',
+                    })}
+                  >
+                    <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
+                      {horse.score.average}
+                    </p>
+                    <p className={css({ fontSize: 12 })}>
+                      {horse.score.average}
+                    </p>
+                  </div>
+
+                  {/* 最大値 */}
+                  <div
+                    className={stack({
+                      gap: 0,
+                      minW: '40px',
+                      textAlign: 'center',
+                    })}
+                  >
+                    <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
+                      {horse.score.max}
+                    </p>
+                    <p className={css({ fontSize: 12 })}>{horse.score.max}</p>
+                  </div>
                 </div>
               </div>
             </div>
