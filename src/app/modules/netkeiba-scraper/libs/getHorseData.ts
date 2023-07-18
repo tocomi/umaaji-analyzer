@@ -1,6 +1,7 @@
 import { Page } from 'puppeteer';
 import { getHorseRecords } from './getHorseRecords';
 import { getHref, getTextContent } from './utils';
+import { getHorseSexFromText } from './utils/getHorseSexFromText';
 import { Horse } from '@/types';
 
 /**
@@ -46,6 +47,17 @@ export const getHorseData = async ({
     if (!oddsRankMatch) continue;
     const oddsRank = Number(oddsRankMatch[1]);
 
+    const sexAndAgeElement = await horseElement.$('.Barei');
+    if (!sexAndAgeElement) continue;
+    // ex. 牡3青鹿
+    const rawSexAndAge = await getTextContent(sexAndAgeElement);
+    if (!rawSexAndAge) continue;
+    const sex = getHorseSexFromText(rawSexAndAge[0]);
+
+    const ageMatch = rawSexAndAge.match(/(\d+)/);
+    if (!ageMatch) continue;
+    const age = Number(ageMatch[1]);
+
     const records = await getHorseRecords({ horseElement });
 
     horses.push({
@@ -54,6 +66,8 @@ export const getHorseData = async ({
       horseNumber,
       gateNumber,
       odds,
+      sex,
+      age,
       oddsRank,
       records,
     });
