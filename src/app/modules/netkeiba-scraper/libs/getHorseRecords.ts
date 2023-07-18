@@ -4,10 +4,10 @@ import { getRaceClassFromClassBadge } from './utils/getRaceClassFromClassBadge';
 import { RaceClass, Record } from '@/types';
 
 const dummyRecord: Record = {
-  raceDate: '-',
-  racePlace: '-',
-  raceName: '-',
-  raceClass: 'OTHER',
+  date: '-',
+  place: '-',
+  name: '-',
+  class: 'OTHER',
   diff: 0,
 };
 
@@ -69,10 +69,10 @@ export const getHorseRecords = async ({
     const diff = Number(rawDiff.split('(')[1].split(')')[0]);
 
     records.push({
-      raceDate: date,
-      racePlace: place,
-      raceName: name,
-      raceClass,
+      date,
+      place,
+      name,
+      class: raceClass,
       diff,
     });
   }
