@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { css, cva } from '../../../../styled-system/css';
 import { stack } from '../../../../styled-system/patterns';
 import { RaceCard } from '@/components/RaceCard';
@@ -38,6 +39,14 @@ const gateNumberRecipe = cva({
 });
 
 export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
+  const sortedHorses = useMemo(() => {
+    return raceDetail.horses.sort((a, b) => {
+      if (a.oddsRank > b.oddsRank) return 1;
+      if (a.oddsRank < b.oddsRank) return -1;
+      return 0;
+    });
+  }, [raceDetail.horses]);
+
   return (
     <div
       className={css({
@@ -50,7 +59,7 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
           onClick={DO_NOTHING}
         />
         <div>
-          {raceDetail.horses.map((horse) => (
+          {sortedHorses.map((horse) => (
             <div
               key={horse.name}
               className={stack({
@@ -106,10 +115,10 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
               <div
                 className={stack({ gap: 0, minW: '40px', textAlign: 'center' })}
               >
-                <p className={css({ fontSize: 18, fontWeight: 'bold' })}>
+                <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
                   {horse.oddsRank}
                 </p>
-                <p className={css({ fontSize: 14 })}>{horse.odds}</p>
+                <p className={css({ fontSize: 12 })}>{horse.odds}</p>
               </div>
             </div>
           ))}
