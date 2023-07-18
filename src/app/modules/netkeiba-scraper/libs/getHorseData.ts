@@ -58,6 +58,17 @@ export const getHorseData = async ({
     if (!ageMatch) continue;
     const age = Number(ageMatch[1]);
 
+    const jockeyElement = await horseElement.$('.Jockey a');
+    if (!jockeyElement) continue;
+    const jockey = await getTextContent(jockeyElement);
+    if (!jockey) continue;
+
+    const handiElement = await horseElement.$$('.Jockey span');
+    if (!handiElement.length) continue;
+    const rawHandi = await getTextContent(handiElement[1]);
+    if (!rawHandi) continue;
+    const handi = Number(rawHandi);
+
     const records = await getHorseRecords({ horseElement });
 
     horses.push({
@@ -69,6 +80,8 @@ export const getHorseData = async ({
       sex,
       age,
       oddsRank,
+      jockey,
+      handi,
       records,
     });
   }

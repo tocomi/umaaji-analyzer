@@ -12,9 +12,11 @@ export type Horse = {
   url: string;
   horseNumber: number;
   gateNumber: number;
-  records: Record[];
   odds: number;
   oddsRank: number;
   sex: HorseSex;
   age: number;
+  jockey: string;
+  handi: number;
+  records: Record[];
 };
