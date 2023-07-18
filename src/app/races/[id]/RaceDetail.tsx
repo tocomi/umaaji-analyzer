@@ -58,10 +58,11 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
           raceSummary={{ ...raceDetail, id: DUMMY_ID }}
           onClick={DO_NOTHING}
         />
-        <div>
+        <div aria-label="horses">
           {sortedHorses.map((horse) => (
             <div
               key={horse.name}
+              aria-label="horse"
               className={stack({
                 direction: 'row',
                 alignItems: 'center',
@@ -72,7 +73,7 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 marginTop: '-1px',
               })}
             >
-              <div className={stack({ gap: 0 })}>
+              <div aria-label="horse numbers" className={stack({ gap: 0 })}>
                 <p
                   // TODO: 型エラーの解消
                   // @ts-ignore
@@ -93,32 +94,45 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                   {horse.horseNumber}
                 </p>
               </div>
-              <div className={stack({ gap: 1 })}>
-                <p
-                  className={css({
-                    fontSize: 14,
-                    minW: '128px',
-                    fontWeight: 'bold',
+              <div
+                aria-label="horse info"
+                className={stack({ direction: 'row', gap: 1, p: 1 })}
+              >
+                <div className={stack({ gap: 1 })}>
+                  <p
+                    className={css({
+                      fontSize: 14,
+                      minW: '128px',
+                      fontWeight: 'bold',
+                    })}
+                  >
+                    {horse.name}
+                  </p>
+                  <div
+                    className={stack({
+                      direction: 'row',
+                      gap: 1,
+                      fontSize: 12,
+                    })}
+                  >
+                    <p>{horse.sex}</p>
+                    <p>{horse.age}</p>
+                    <p>{horse.jockey}</p>
+                    <p>{horse.handi}</p>
+                  </div>
+                </div>
+                <div
+                  className={stack({
+                    gap: 0,
+                    minW: '40px',
+                    textAlign: 'center',
                   })}
                 >
-                  {horse.name}
-                </p>
-                <div
-                  className={stack({ direction: 'row', gap: 1, fontSize: 12 })}
-                >
-                  <p>{horse.sex}</p>
-                  <p>{horse.age}</p>
-                  <p>{horse.jockey}</p>
-                  <p>{horse.handi}</p>
+                  <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
+                    {horse.oddsRank}
+                  </p>
+                  <p className={css({ fontSize: 12 })}>{horse.odds}</p>
                 </div>
-              </div>
-              <div
-                className={stack({ gap: 0, minW: '40px', textAlign: 'center' })}
-              >
-                <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
-                  {horse.oddsRank}
-                </p>
-                <p className={css({ fontSize: 12 })}>{horse.odds}</p>
               </div>
             </div>
           ))}
