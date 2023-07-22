@@ -1,7 +1,7 @@
 import RaceDetail from './RaceDetail';
 import { Race } from '@/types';
 
-export const getRaceDetail = async (raceId: number): Promise<Race> => {
+const getRaceDetail = async (raceId: number): Promise<Race> => {
   const response = await fetch(`http://localhost:3000/api/races/${raceId}`, {
     next: { revalidate: 30000 },
   });
