@@ -6,6 +6,7 @@ const getRaceDetail = async (raceId: number): Promise<Race> => {
   const response = await fetch(`${DOMAIN}/api/races/${raceId}`, {
     next: { revalidate: 300 },
   });
+  console.log('👾 -> response:', response);
   const raceDetail = (await response.json()) as Race;
   return raceDetail;
 };
