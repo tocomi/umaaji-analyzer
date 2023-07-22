@@ -1,14 +1,11 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { css, cva } from '../../../../styled-system/css';
 import { center, stack } from '../../../../styled-system/patterns';
 import { RaceCard } from '@/components/RaceCard';
 import { calculateScore } from '@/modules/umaaji-calculator';
 import { HorseSexMap, Race } from '@/types';
-
-const DUMMY_ID = 0;
-const DO_NOTHING = () => undefined;
 
 const gateNumberRecipe = cva({
   base: {
@@ -59,20 +56,120 @@ const ageRecipe = cva({
 });
 
 export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
-  const sortedHorses = useMemo(() => {
-    return raceDetail.horses.sort((a, b) => {
-      if (a.oddsRank > b.oddsRank) return 1;
-      if (a.oddsRank < b.oddsRank) return -1;
-      return 0;
-    });
-  }, [raceDetail.horses]);
-
-  const sortedHorsesWithScore = useMemo(() => {
-    return sortedHorses.map((horse) => {
+  const horsesWithScore = useMemo(() => {
+    return raceDetail.horses.map((horse) => {
       const score = calculateScore(raceDetail, horse.records);
-      return { ...horse, score };
+      return {
+        ...horse,
+        score: {
+          ...score,
+          average: score.average,
+          max: score.max,
+        },
+      };
     });
-  }, [raceDetail, sortedHorses]);
+  }, [raceDetail]);
+
+  const horsesWithRank = useMemo(() => {
+    const addAvarageRank = (horses: typeof horsesWithScore) => {
+      let currentRank = 1;
+      let previousScore = horses[0].score.average;
+      return horses.map((horse, index) => {
+        if (index === 0) {
+          return {
+            ...horse,
+            score: {
+              ...horse.score,
+              averageRank: currentRank,
+            },
+          };
+        }
+
+        // NOTE: 前の馬とスコアが同じ場合は同じ順位
+        if (horse.score.average === previousScore) {
+          return {
+            ...horse,
+            score: {
+              ...horse.score,
+              averageRank: currentRank,
+            },
+          };
+        }
+
+        previousScore = horse.score.average;
+        currentRank = index + 1;
+        return {
+          ...horse,
+          score: {
+            ...horse.score,
+            averageRank: currentRank,
+          },
+        };
+      });
+    };
+
+    const addMaxRank = (horses: ReturnType<typeof addAvarageRank>) => {
+      let currentRank = 1;
+      let previousScore = horses[0].score.max;
+      return horses.map((horse, index) => {
+        if (index === 0) {
+          return {
+            ...horse,
+            score: {
+              ...horse.score,
+              maxRank: currentRank,
+            },
+          };
+        }
+
+        // NOTE: 前の馬とスコアが同じ場合は同じ順位
+        if (horse.score.max === previousScore) {
+          return {
+            ...horse,
+            score: {
+              ...horse.score,
+              maxRank: currentRank,
+            },
+          };
+        }
+
+        previousScore = horse.score.max;
+        currentRank = index + 1;
+        return {
+          ...horse,
+          score: {
+            ...horse.score,
+            maxRank: currentRank,
+          },
+        };
+      });
+    };
+
+    const sortedByAverageHorses = horsesWithScore.sort(
+      (a, b) => b.score.average - a.score.average
+    );
+    const horsesWithAverageRank = addAvarageRank(sortedByAverageHorses);
+
+    const sortedByMaxHorses = horsesWithAverageRank.sort(
+      (a, b) => b.score.max - a.score.max
+    );
+    const horsesWithMaxRank = addMaxRank(sortedByMaxHorses);
+
+    return horsesWithMaxRank;
+  }, [horsesWithScore]);
+
+  const sortedHorses = useMemo(() => {
+    return horsesWithRank.sort((a, b) => {
+      return a.oddsRank - b.oddsRank;
+    });
+  }, [horsesWithRank]);
+
+  const onRaceCardClick = useCallback(() => {
+    window.open(
+      `https://race.netkeiba.com/race/shutuba_past.html?race_id=${raceDetail.id}&rf=shutuba_submenu`,
+      '_blank noopener noreferrer'
+    );
+  }, [raceDetail.id]);
 
   return (
     <div
@@ -81,13 +178,10 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
       })}
     >
       <div className={stack({ gap: 4 })}>
-        <RaceCard
-          raceSummary={{ ...raceDetail, id: DUMMY_ID }}
-          onClick={DO_NOTHING}
-        />
+        <RaceCard raceSummary={raceDetail} onClick={onRaceCardClick} />
 
         <div>
-          {sortedHorsesWithScore.map((horse) => (
+          {sortedHorses.map((horse) => (
             <div
               key={horse.name}
               className={stack({
@@ -170,7 +264,7 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                   </div>
                 </div>
 
-                <div className={stack({ direction: 'row', gap: 2 })}>
+                <div className={stack({ direction: 'row', gap: 3 })}>
                   {/* オッズ */}
                   <div
                     className={stack({
@@ -182,7 +276,9 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                     <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
                       {horse.oddsRank}
                     </p>
-                    <p className={css({ fontSize: 12 })}>{horse.odds}</p>
+                    <p className={css({ fontSize: 12 })}>
+                      {horse.odds.toFixed(1)}
+                    </p>
                   </div>
 
                   {/* 平均値 */}
@@ -194,10 +290,10 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                     })}
                   >
                     <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
-                      {horse.score.average}
+                      {horse.score.averageRank}
                     </p>
                     <p className={css({ fontSize: 12 })}>
-                      {horse.score.average}
+                      {horse.score.average.toFixed(1)}
                     </p>
                   </div>
 
@@ -210,9 +306,11 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                     })}
                   >
                     <p className={css({ fontSize: 16, fontWeight: 'bold' })}>
-                      {horse.score.max}
+                      {horse.score.maxRank}
                     </p>
-                    <p className={css({ fontSize: 12 })}>{horse.score.max}</p>
+                    <p className={css({ fontSize: 12 })}>
+                      {horse.score.max.toFixed(1)}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -5,10 +5,10 @@ import { css } from '../../../styled-system/css';
 import { stack } from '../../../styled-system/patterns';
 import { RaceClassBadge } from '@/components/RaceClassBadge';
 import { RaceRoundBadge } from '@/components/RaceRoundBadge';
-import { RaceSummary, raceTypeName } from '@/types';
+import { Race, raceTypeName } from '@/types';
 
 type Props = {
-  raceSummary: RaceSummary;
+  raceSummary: Race;
   onClick: (raceId: number) => void;
 };
 

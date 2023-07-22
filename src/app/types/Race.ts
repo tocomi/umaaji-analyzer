@@ -2,6 +2,8 @@ import { Horse } from './Horse';
 import { RaceClass, RaceType } from './shared';
 
 export type Race = {
+  /** netkeiba 上で定義されている ID */
+  id: number;
   round: number;
   name: string;
   class: RaceClass;
@@ -11,9 +13,4 @@ export type Race = {
   distance: number;
   horseCount: number;
   horses: Horse[];
-};
-
-export type RaceSummary = Omit<Race, 'horses'> & {
-  /** netkeiba 上で定義されている ID */
-  id: number;
 };

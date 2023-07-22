@@ -14,7 +14,8 @@ export default async function Race({
 }: {
   params: { id: string };
 }) {
-  const raceDetail = await getRaceDetail(Number(id));
+  const _id = Number(id);
+  const raceDetail = await getRaceDetail(_id);
 
-  return <RaceDetail raceDetail={raceDetail} />;
+  return <RaceDetail raceDetail={{ ...raceDetail, id: _id }} />;
 }
