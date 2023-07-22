@@ -102,6 +102,7 @@ export const getRaceData = async ({
   const horses = await getHorseData({ page });
 
   return {
+    id: raceId,
     round: raceRound,
     name: raceName,
     place: racePlace,
