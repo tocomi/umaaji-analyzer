@@ -6,7 +6,7 @@ import {
   getRaceTypeFromTypeName,
   getTextContent,
 } from './utils';
-import { RaceClass, RaceSummary } from '@/types';
+import { RaceClass, Race, Horse } from '@/types';
 
 /**
  * 開催地の一覧を取得する
@@ -93,8 +93,7 @@ const getId = async (
 export const getRaceOtherInfo = async (
   raceElement: ElementHandle<Element>
 ): Promise<
-  | Pick<RaceSummary, 'startTime' | 'type' | 'distance' | 'horseCount'>
-  | undefined
+  Pick<Race, 'startTime' | 'type' | 'distance' | 'horseCount'> | undefined
 > => {
   const startTimeElement = await raceElement.$('.RaceList_Itemtime');
   if (!startTimeElement) return;
@@ -123,7 +122,8 @@ export const getRaceOtherInfo = async (
   return { startTime, type, distance, horseCount };
 };
 
-export const getTodayRaces = async (page: Page): Promise<RaceSummary[]> => {
+const DUMMY_HORSES: Horse[] = [];
+export const getTodayRaces = async (page: Page): Promise<Race[]> => {
   console.log('🏇 Getting today races...');
 
   // 開催レース一覧
@@ -131,7 +131,7 @@ export const getTodayRaces = async (page: Page): Promise<RaceSummary[]> => {
 
   const elements = await page.$$('.RaceList_DataItem');
   const places = await getPlaces(page);
-  const races = [];
+  const races: Race[] = [];
   let currentPlaceIndex = 0;
   let beforeRaceRound = 0;
   for (const element of elements) {
@@ -156,7 +156,15 @@ export const getTodayRaces = async (page: Page): Promise<RaceSummary[]> => {
     const otherInfo = await getRaceOtherInfo(element);
     if (!otherInfo) continue;
 
-    races.push({ id, place, round, name, class: raceClass, ...otherInfo });
+    races.push({
+      id,
+      place,
+      round,
+      name,
+      class: raceClass,
+      horses: DUMMY_HORSES,
+      ...otherInfo,
+    });
   }
 
   return races;

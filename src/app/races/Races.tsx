@@ -5,9 +5,9 @@ import { useCallback, useMemo } from 'react';
 import { stack } from '../../../styled-system/patterns';
 import { PlaceTabs } from './PlaceTabs';
 import { RaceCard } from '@/components/RaceCard';
-import { RaceSummary } from '@/types';
+import { Race } from '@/types';
 
-export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
+export const Races = ({ raceSummaries }: { raceSummaries: Race[] }) => {
   const router = useRouter();
 
   const onClickCard = useCallback(
@@ -18,7 +18,7 @@ export const Races = ({ raceSummaries }: { raceSummaries: RaceSummary[] }) => {
   );
 
   const raceSummaryMap = useMemo(() => {
-    return raceSummaries.reduce<{ [key: string]: RaceSummary[] }>(
+    return raceSummaries.reduce<{ [key: string]: Race[] }>(
       (result, raceSummary) => {
         (result[raceSummary.place] = result[raceSummary.place] || []).push(
           raceSummary
