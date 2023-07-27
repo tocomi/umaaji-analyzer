@@ -8,7 +8,6 @@ const getRaceSummaries = async (): Promise<Race[]> => {
   const response = await fetch(`${DOMAIN}/api/races`, {
     next: { revalidate: 3600 },
   });
-  console.log('👾 -> response:', response);
   const raceSummaries = (await response.json()) as Race[];
   return raceSummaries;
 };
