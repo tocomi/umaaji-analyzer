@@ -6,7 +6,7 @@ export async function generateStaticParams() {
   const response = await fetch(`${DOMAIN}/races`);
   const races = (await response.json()) as Race[];
   return races.map((race) => ({
-    id: race.id,
+    id: race.id.toString(),
   }));
 }
 
