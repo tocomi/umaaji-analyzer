@@ -3,7 +3,7 @@ import { DOMAIN } from '@/constants';
 import { Race } from '@/types';
 
 const getRaceDetail = async (raceId: number): Promise<Race> => {
-  const response = await fetch(`${DOMAIN}/api/races/${raceId}`, {
+  const response = await fetch(`${DOMAIN}/races/${raceId}`, {
     next: { revalidate: 300 },
   });
   const raceDetail = (await response.json()) as Race;
