@@ -2,6 +2,14 @@ import RaceDetail from './RaceDetail';
 import { DOMAIN } from '@/constants';
 import { Race } from '@/types';
 
+export async function generateStaticParams() {
+  const response = await fetch(`${DOMAIN}/races`);
+  const races = (await response.json()) as Race[];
+  return races.map((race) => ({
+    id: race.id,
+  }));
+}
+
 const getRaceDetail = async (raceId: number): Promise<Race> => {
   const response = await fetch(`${DOMAIN}/races/${raceId}`, {
     next: { revalidate: 300 },
