@@ -34,6 +34,7 @@ export const RaceCard: FC<Props> = memo(function RaceCard({
         borderWidth: 2,
         borderColor: 'cyan.700',
         backgroundColor: 'sky.50',
+        cursor: 'pointer',
       })}
       onClick={_onClick}
     >
