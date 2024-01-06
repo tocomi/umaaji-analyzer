@@ -2,13 +2,15 @@
 
 import { useCallback, useMemo } from 'react';
 import { css, cva } from '../../../../styled-system/css';
-import { center, stack } from '../../../../styled-system/patterns';
+import { center, hstack, stack } from '../../../../styled-system/patterns';
 import { RaceCard } from '@/components/RaceCard';
 import { calculateScore } from '@/modules/umaaji-calculator';
 import { HorseSexMap, Race } from '@/types';
 
 const gateNumberRecipe = cva({
   base: {
+    w: '18px',
+    h: '51px',
     fontSize: 12,
     flex: 1,
     display: 'flex',
@@ -19,7 +21,6 @@ const gateNumberRecipe = cva({
     color: 'gray.500',
     textAlign: 'center',
     borderRightWidth: 1,
-    borderBottomWidth: 1,
     borderColor: 'gray.300',
   },
   variants: {
@@ -194,7 +195,7 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 marginTop: '-1px',
               })}
             >
-              <div className={stack({ gap: 0, h: '51px', minW: '18px' })}>
+              <div className={hstack({ gap: 0 })}>
                 {/* 枠番 */}
                 <div
                   className={gateNumberRecipe({
@@ -208,6 +209,8 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                 {/* 馬番 */}
                 <div
                   className={center({
+                    w: '18px',
+                    h: '51px',
                     flex: 1,
                     fontSize: 12,
                     color: 'gray.500',
