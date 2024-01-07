@@ -182,6 +182,20 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
         <RaceCard raceSummary={raceDetail} onClick={onRaceCardClick} />
 
         <div>
+          <div
+            className={hstack({
+              alignItems: 'center',
+              gap: 2,
+              justifyContent: 'end',
+              fontSize: 12,
+              pr: 1.5,
+              pb: 1,
+            })}
+          >
+            <p>オッズ</p>
+            <p>5走平均</p>
+            <p>最高値</p>
+          </div>
           {sortedHorses.map((horse) => (
             <div
               key={horse.name}
@@ -267,7 +281,7 @@ export default function RaceDetail({ raceDetail }: { raceDetail: Race }) {
                   </div>
                 </div>
 
-                <div className={stack({ direction: 'row', gap: 3 })}>
+                <div className={stack({ direction: 'row', gap: 2 })}>
                   {/* オッズ */}
                   <div
                     className={stack({
